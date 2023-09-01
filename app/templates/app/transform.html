@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voice Mirror</title>
+  <!-- Link to Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <!-- Your custom CSS -->
+  <link rel="stylesheet" href="{% static 'app/css/transform.css' %}" />
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top navbar">
+    <div class="container">
+      <a class="navbar-brand" href="#">Voice Mirror</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/">首頁</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/characters">排行榜</a>                                           
+          </li>
+        </ul>
+        <button class="btn btn-primary" type="button">登入</button>
+      </div>
+    </div>
+  </nav>
+  <!-- Banner Section -->
+  <div class="container" style="padding:70px 10px 40px 10px; margin: 0 auto 0 auto;">
+    <div class="row">
+      <div class="col-12 col-md-12 text-center">
+        <h3><b><font face="微軟正黑體">來轉換{{character.name}}的聲音吧</font></b></h3>
+      </div>
+      <div class="col-12 col-lg-4 text-center" style="padding:30px 0px 0px 0px;">
+        <img style="border-radius: 70%;" width="300px" height="300px" src="{% static character.img_path %}">
+        <p id="characterId" style="display: none;">{{ character.id }}</p>
+        </br>
+        </br>
+        </br>
+      </div>
+      <div class="col-12 col-lg-8"  style="padding:30px 10px 0px 10px;"> 
+        <div class="upload-area">
+          <label for="music-file" class="upload-label">
+            <i class="upload-icon fas fa-cloud-upload-alt"></i>
+            <div class="upload-text" id="file-name">拖放檔案至此或點擊上傳</div>
+          </label>
+          <input type="file" id="music-file" accept=".mp3,.wav,.ogg" style="display: none;">
+        </div>
+        <div class="progress-container" id="progress-container">
+          <div class="progress-bar"></div>
+          <div class="progress-text" id="progress-text">0%</div>
+        </div>
+        <div class="pitch-slider">
+          <div class="current-pitch">調整音高: -12</div>
+          <div class="slider-container">
+            <span class="slider-label min-label">-12</span>
+            <input type="range" id="transpose" name="pitch" min="-12" max="12" value="-12" step="1">
+            <span class="slider-label max-label">12</span>
+          </div>
+        </div>
+        <div class="convert-button">
+          <button id="convert-button" disabled>開始轉換</button>
+        </div>
+        <div id="xxx"></div>
+        <a id="tryagain" style="display: none;" href="/transform/{{ character.id }}">
+        <div class="convert-button">
+          <button>
+            再試一次
+          </button>
+        </div>
+        </a>
+        <a style="display: none;" id="tryagain" href="/transform/{{ character.id }}" class="btn btn-success">再試一次</a>
+      </div> 
+    </div>
+  </div>
+  <footer class="container-fluid fixed-bottom bg-dark text-center text-white p-2 mt-5">
+    Copyright © 2023 VoiceMirror Inc. 
+  </footer>
+  <!-- Link to Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // 檔案選擇時觸發事件
+        $('#music-file').change(function(event) {
+            var selectedFile = event.target.files[0];
+            var selectedFileName = selectedFile.name;
+            $('#file-name').text(selectedFileName);
+
+            // 啟用轉換按鈕
+            $('#convert-button').prop('disabled', false);
+        });
+        // 點擊轉換按鈕時觸發事件
+        $('#convert-button').click(function() {
+            $('#convert-button').prop('disabled', true);
+            // 隱藏檔案選擇區域
+            $('.upload-area').hide();
+            // 顯示進度條和進度文字
+            $('#progress-container').show();
+            $('.pitch-slider').hide();
+            $('#convert-button').hide();
+
+            // 取得選擇的檔案
+            var file = $('#music-file')[0].files[0];
+            // var characterId = $('#characterId').text;
+            var characterId = document.getElementById("characterId").textContent;
+            var transpose = document.getElementById("transpose").value;
+            // 建立FormData物件
+            var formData = new FormData();
+            formData.append('music_file', file);
+            formData.append('characterId', characterId);
+            formData.append('transpose', transpose);
+            
+			// 傳送表單資料到後端
+            $.ajax({
+                url: '/convert',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                xhr: function() {
+                    // 建立XHR物件以監聽上傳進度
+                    var xhr = new window.XMLHttpRequest();
+                    xhr.upload.addEventListener('progress', function(evt) {
+                        if (evt.lengthComputable) {
+                            // 計算上傳進度百分比
+                            var percentComplete = (evt.loaded / evt.total) * 100;
+                            // 更新進度條和進度文字
+                            updateProgress(percentComplete);
+                        }
+                    }, false);
+                    return xhr;
+                },
+                success: function(response) {
+                    console.log(response);
+                    // 隱藏檔案選擇區域
+                    //$('.upload-area').show();
+                    // 顯示進度條和進度文字
+                    $('#progress-container').hide();
+                    //$('#file-name').text('拖放檔案至此或點擊上傳');
+                    //$('#transpose').show();
+                    downloadConvertedFile(response)
+                    $('#tryagain').show();
+                },
+
+                error: function(xhr, status, error) {
+                    // 轉換失敗時的處理
+                    console.log(error);
+                    // 隱藏檔案選擇區域
+                    //$('.upload-area').show();
+                    // 顯示進度條和進度文字
+                    //$('#progress-container').hide();
+                    $('#progress-text').text('好像有哪裡出錯了QQ');
+                    //$('#transpose').show();
+                    //$('#file-name').text('拖放檔案至此或點擊上傳');
+                    $('#tryagain').show();
+                }
+            });
+        });
+
+        const pitchSlider = document.getElementById('transpose');
+        const currentPitch = document.querySelector('.current-pitch');
+
+        pitchSlider.addEventListener('input', (event) => {     
+            const pitchValue = event.target.value;
+            currentPitch.textContent = `調整音高: ${pitchValue}`;
+        });
+
+        const audioFileInput = document.getElementById('music-file');
+        audioFileInput.addEventListener('change', handleFile);
+
+        function handleFile() {
+          const file = audioFileInput.files[0];
+    
+          if (file) {
+
+            if (!file.type.startsWith('audio/')) {
+                window.alert("要上傳聲音檔喔")
+                $('.upload-area').hide();
+                $('.pitch-slider').hide();
+                $('#convert-button').hide();
+                $('#tryagain').show();
+                return;
+            }
+            const audio = new Audio();
+            audio.src = URL.createObjectURL(file);
+    
+            audio.addEventListener('loadedmetadata', () => {
+              const duration = audio.duration;
+              console.log(duration)
+              if (duration > 31) {
+                  $('#convert-button').prop('disabled', true);
+                  window.alert("要上傳小於30秒的聲音檔喔")
+                  $('.upload-area').hide();
+                  $('.pitch-slider').hide();
+                  $('#convert-button').hide();
+                  $('#tryagain').show();
+              }
+            });
+          }
+        }
+
+		// 更新進度條和進度文字
+        function updateProgress(progress) {
+            $('.progress-bar').css('width', progress + '%');
+            var pr = Math.round(progress);
+            if (pr == 100) {
+                $('#progress-text').text('轉換中...');
+                var startTime = Date.now(); // 记录开始转换的时间
+
+                function updateConversionTime() {
+                    var currentTime = Date.now();
+                    var elapsedTime = currentTime - startTime;
+                    var seconds = Math.floor(elapsedTime / 1000) % 60;
+                    var minutes = Math.floor(elapsedTime / 1000 / 60);
+                    var timeString = minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
+                    console.log(timeString)
+                    $('#progress-text').text('轉換中: ' + timeString);
+                }
+        
+            } else {
+                $('#progress-text').text('上傳檔案中: ' + Math.round(progress) + '%')
+            }
+        }
+
+        // 下載轉換後的檔案
+        function downloadConvertedFile(id) {
+            var el = document.getElementById("xxx"); 
+            el.innerHTML = "<audio controls style=\"width:100%;\"><source src=\"/fetch?id=" + id + "\" type=\"audio/wav\">Your browser does not support the audio element.</audio>"
+        }
+    });
+</script>
+</html>

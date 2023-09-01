@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>parrot.ai</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #111;
+            color: #fff;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 30px;
+        }
+        
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #333;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        
+        input[type="file"] {
+            display: block;
+            margin-bottom: 10px;
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            color: #333;
+        }
+        
+        select {
+            display: block;
+            margin-bottom: 10px;
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            color: #333;
+        }
+        
+        input[type="submit"] {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #fff;
+            color: #333;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        input[type="submit"]:hover {
+            background-color: #eee;
+        }
+        
+        .fa-upload {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>parrot.ai</h1>
+    <form action="/generate" method="post" enctype="multipart/form-data">
+        <label for="audio">上傳聲音檔案：</label>
+        <div class="file-upload">
+            <label for="audio" class="file-upload-label">
+                <i class="fas fa-upload"></i> 選擇檔案
+            </label>
+            <input type="file" name="audio" id="audio" accept=".wav">
+        </div>
+        <br>
+        <label for="model">選擇模型：</label>
+        <select name="model" id="model">
+            <option value="model1">模型1</option>
+            <option value="model2">模型2</option>
+            <!-- 在這裡添加更多的模型選項 -->
+        </select>
+        <br>
+        <input type="submit" value="生成">
+    </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>revoice.ai</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: '微軟正黑體', Arial, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background-color: #333;
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            font-size: 60;
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .upload-icon {
+            font-size: 64px;
+            color: #999;
+            margin-bottom: 10px;
+        }
+
+        .upload-text {
+            color: #ccc;
+            font-size: 18px;
+        }
+
+	.model-select {
+            margin-bottom: 20px;
+        }
+
+        .progress-container {
+            text-align: center;
+            margin-top: 40px;
+            display: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background-color: #4CAF50;
+            border-radius: 4px;
+        }
+
+        .progress-text {
+            color: #666;
+            font-size: 24px;
+            margin-top: 10px;
+        }
+
+        .convert-button {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .convert-button button {
+            padding: 12px 24px;
+            background-color: #4CAF50;
+            color: #fff;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+
+        .convert-button button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .convert-button button:hover {
+            background-color: #45a049;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>revoice.ai</h1>
+
+        <div class="upload-area">
+            <label for="music-file" class="upload-label">
+                <i class="upload-icon fas fa-cloud-upload-alt"></i>
+                <div class="upload-text" id="file-name">拖放檔案至此或點擊上傳</div>
+            </label>
+            <input type="file" id="music-file" accept=".mp3,.wav,.ogg" style="display: none;">
+        </div>
+	<div class="model-select">
+                <label for="model" class="form-label"></label>
+                <select id="model" class="form-select" name="model">
+                    <option value="model1">柯文哲</option>
+                    <option value="model2">賴清德</option>
+                    <option value="model3">侯友宜</option>
+                </select>
+            </div>
+
+        <div class="progress-container" id="progress-container">
+            <div class="progress-bar"></div>
+            <div class="progress-text" id="progress-text">0%</div>
+        </div>
+
+        <div class="convert-button">
+            <button id="convert-button" disabled>開始轉換</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // 檔案選擇時觸發事件
+            $('#music-file').change(function(event) {
+                var selectedFile = event.target.files[0];
+                var selectedFileName = selectedFile.name;
+                $('#file-name').text(selectedFileName);
+
+                // 啟用轉換按鈕
+                $('#convert-button').prop('disabled', false);
+            });
+
+            // 點擊轉換按鈕時觸發事件
+            $('#convert-button').click(function() {
+		$('#convert-button').prop('disabled', true);
+                // 隱藏檔案選擇區域
+                $('.upload-area').hide();
+                // 顯示進度條和進度文字
+                $('#progress-container').show();
+
+                // 取得選擇的檔案
+                var file = $('#music-file')[0].files[0];
+		var e = document.getElementById("model");
+		var value = e.value;
+		console.log(value)
+
+                // 建立FormData物件
+                var formData = new FormData();
+                formData.append('music_file', file);
+                formData.append('model', value);
+
+                // 傳送表單資料到後端
+                $.ajax({
+                    url: '/convert',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    xhr: function() {
+                        // 建立XHR物件以監聽上傳進度
+                        var xhr = new window.XMLHttpRequest();
+                        xhr.upload.addEventListener('progress', function(evt) {
+                            if (evt.lengthComputable) {
+                                // 計算上傳進度百分比
+                                var percentComplete = (evt.loaded / evt.total) * 100;
+                                // 更新進度條和進度文字
+                                updateProgress(percentComplete);
+                            }
+                        }, false);
+                        return xhr;
+                    },
+                    success: function(response) {
+                        // 轉換成功後的處理
+                        //var convertedFile = response.converted_file;
+                        // 下載轉換後的檔案
+                        //downloadConvertedFile(convertedFile);
+                        downloadConvertedFile(response);
+			console.log(response)
+			//$('.upload-area').show();
+			//$('#progress-container').hide();
+			//$('#file-name').text('拖放檔案至此或點擊上傳');
+
+                        // 啟用轉換按鈕
+                        //$('#convert-button').prop('disabled', true);
+			var link = document.createElement('a');
+                link.href = '/';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                    },
+                    error: function(xhr, status, error) {
+                        // 轉換失敗時的處理
+                        console.log(error);
+                    }
+                });
+            });
+
+            // 更新進度條和進度文字
+            function updateProgress(progress) {
+                $('.progress-bar').css('width', progress + '%');
+		var pr = Math.round(progress);
+		if (pr == 100) {
+                    $('#progress-text').text('轉換中，請稍等 ...');
+                } else {
+                    $('#progress-text').text('上傳檔案中: ' + Math.round(progress) + '%')
+                }
+            }
+
+            // 下載轉換後的檔案
+            function downloadConvertedFile(filename) {
+                var link = document.createElement('a');
+                link.href = '/download?id=' + filename;
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        });
+    </script>
+</body>
+</html>

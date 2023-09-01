@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>revoice.ai</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: "微軟正黑體", Arial, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background-color: #333;
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            font-size: 60px;
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .upload-icon {
+            font-size: 64px;
+            color: #999;
+            margin-bottom: 10px;
+        }
+
+        .upload-text {
+            color: #ccc;
+            font-size: 18px;
+        }
+
+        .model-select {
+            margin-bottom: 20px;
+        }
+
+        .convert-button {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .convert-button button {
+            padding: 12px 24px;
+            background-color: #4CAF50;
+            color: #fff;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+
+        .convert-button button:hover {
+            background-color: #45a049;
+        }
+
+        .filename {
+            color: #fff;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .filename span {
+            font-weight: bold;
+        }
+
+        .filename.hidden {
+            display: none;
+        }
+
+        .filename.active {
+            display: block;
+        }
+
+        .filename.active + .upload-text {
+            display: none;
+        }
+
+        .filename.active + .upload-icon {
+            margin-bottom: 30px;
+        }
+
+        .filename.active ~ .convert-button {
+            margin-top: 0;
+        }
+
+        .filename.active ~ .convert-button button {
+            margin-top: 10px;
+        }
+
+        .copyright {
+            text-align: center;
+            color: #999;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>revoice.ai</h1>
+
+        <form action="generate" id="music-form" enctype="multipart/form-data" method="POST">
+            <div class="upload-area">
+                <label for="audio" class="upload-label">
+                    <i class="upload-icon fas fa-cloud-upload-alt"></i>
+                    <div class="upload-text">拖放檔案至此或點擊上傳</div>
+                </label>
+                <input type="file" id="audio" name="audio" accept=".wav" style="display: none;">
+                <div id="filename" class="filename hidden"></div>
+            </div>
+
+            <div class="model-select">
+                <label for="model" class="form-label"></label>
+                <select id="model" class="form-select" name="model">
+                    <option value="model1">模型 1</option>
+                    <option value="model2">模型 2</option>
+                    <option value="model3">模型 3</option>
+                </select>
+            </div>
+
+            <div class="convert-button">
+                <button type="submit" id="convert-btn" class="btn btn-primary">開始轉換</button>
+            </div>
+        </form>
+    </div>
+
+    
+	<div class="copyright">
+		&copy; Copyright © 2023 revoice.ai
+	</div>
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('audio').addEventListener('change', function(event) {
+            var selectedFile = event.target.files[0];
+            var selectedFileName = selectedFile.name;
+            document.getElementById('filename').innerHTML = '已選擇檔案: <span>' + selectedFileName + '</span>';
+            document.getElementById('filename').classList.add('active');
+        });
+
+    </script>
+</body>
+</html>

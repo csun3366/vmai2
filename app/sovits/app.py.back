@@ -1,0 +1,76 @@
+from flask import Flask, render_template, request, send_file
+from werkzeug.utils import secure_filename
+import librosa
+import subprocess
+import os
+import calendar
+import time
+import threading
+
+app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = '/home/aarch305305/so-vits-svc' 
+
+lock = threading.Lock()
+count = 0
+
+def increment():
+    global count
+    if count == 10000000:
+        count = 0
+    else:
+        count = count + 1
+
+@app.route('/')
+def index():
+    cwd = os.getcwd()
+    return render_template('index2.html')
+
+@app.route('/convert', methods=['POST'])
+def generate():
+    # 取得上傳的檔案
+    print("123")
+    audio_file = request.files['music_file']
+    # 取得選擇的模型
+    selected_model = request.form['model']
+    print(str(selected_model))
+    print("321") 
+    # 儲存上傳的檔案
+    current_GMT = time.gmtime()
+    time_stamp = calendar.timegm(current_GMT)
+
+    lock.acquire()
+    fname = 'result_' + str(time_stamp) + str(count) + '.wav' 
+    returnId = str(time_stamp) + str(count)
+    increment()
+    lock.release()
+
+    print(fname)
+    print("==============================")
+    filename = secure_filename(fname)
+    audio_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+    # 開始生成
+    print(subprocess.call(["cp", fname, "raw/"], shell=False))
+    print(subprocess.call(["python3",  "inference_main.py",  "-m",  "logs/44k/G_10000.pth",  "-c",  "configs/config.json",  "-n", fname,  "-t", "0", "-s",  "speaker0"], shell=False))
+    
+    # 返回生成的檔案供下載
+    result = '''
+        <h2>音樂轉換完成</h2>
+        <p>您可以點擊下方連結下載轉換後的音樂檔案：</p>
+        <a href="/download?id=''' + str(time_stamp) + '''">下載</a>
+        <br>
+        <a href="/">返回首頁</a>
+    '''
+    #return result
+    return returnId
+
+@app.route('/download')
+def download():
+    id = request.args.get("id")
+    fname = 'result_' + str(id) + '.wav_0key_speaker0.flac'
+    # 轉換後的檔案路徑
+    converted_file_path = '/home/aarch305305/so-vits-svc/results/' + fname
+    return send_file(converted_file_path, as_attachment=True)
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
