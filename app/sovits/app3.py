@@ -94,6 +94,7 @@ def predict(
     res_path = f'./results/{fname}'
     soundfile.write(res_path, result, svc_model.target_sample, format=wav_format)
     audio, _ = librosa.load(res_path, sr=svc_model.target_sample, duration=duration_limit)
+    print("hI" + str(svc_model.target_sample))
     return svc_model.target_sample,audio
 
 ######## gaurantee thread safe #######

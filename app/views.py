@@ -56,15 +56,36 @@ def initModels():
 
     device = "cuda" if torch.cuda.is_available() else "cpu" 
 
-    # 加入柯文哲模型
-    models["1"] = Svc(net_g_path='logs/44k/G_20000_230826.pth', config_path='configs/config.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    # Add models 
+    models["32"] = Svc(net_g_path='logs/44k/G_trump_68000.pth', config_path='configs/config_trump.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["31"] = Svc(net_g_path='logs/44k/G_drake_106000.pth', config_path='configs/config_drake.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["30"] = Svc(net_g_path='logs/44k/G_chris_105600.pth', config_path='configs/config_chris.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["29"] = Svc(net_g_path='logs/44k/G_chief_100000.pth', config_path='configs/config_chief.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    #models["28"] = Svc(net_g_path='logs/44k/G_bunny_180800.pth', config_path='configs/config_bunny.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["26"] = Svc(net_g_path='logs/44k/G_weekend_110400.pth', config_path='configs/config_weekend.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["25"] = Svc(net_g_path='logs/44k/G_juice_163200.pth', config_path='configs/config_juice.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["24"] = Svc(net_g_path='logs/44k/G_dua_72800.pth', config_path='configs/config_dua.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["21"] = Svc(net_g_path='logs/44k/G_ariana_89600.pth', config_path='configs/config_ariana.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["20"] = Svc(net_g_path='logs/44k/G_kanye_199200.pth', config_path='configs/config_kanye.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["19"] = Svc(net_g_path='logs/44k/G_kurt_138600.pth', config_path='configs/config_kurt.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["18"] = Svc(net_g_path='logs/44k/G_houston_33600.pth', config_path='configs/config_houston.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["17"] = Svc(net_g_path='logs/44k/G_freddy_300000.pth', config_path='configs/config_freddy.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["15"] = Svc(net_g_path='logs/44k/G_brunomars_124930.pth', config_path='configs/config_brunomars.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["13"] = Svc(net_g_path='logs/44k/G_mj_150000.pth', config_path='configs/config_mj.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["12"] = Svc(net_g_path='logs/44k/G_jay_20000.pth', config_path='configs/config_jay.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["8"] = Svc(net_g_path='logs/44k/G_sun_27200.pth', config_path='configs/config_sun.json', device=device, cluster_model_path='logs/44k/kmeans_sun_10000.pt')
+    models["9"] = Svc(net_g_path='logs/44k/G_ton_15000.pth', config_path='configs/config_ton.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["14"] = Svc(net_g_path='logs/44k/G_cowen_20000.pth', config_path='configs/config_cowen.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["1"] = Svc(net_g_path='logs/44k/G_small_new_230930_18000.pth', config_path='configs/config_small_new.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
     #models["1"] = Svc(net_g_path='logs/44k/G_18000.pth', config_path='configs/config.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
 
     speakers = list(models.keys())
+    for k in models.keys():
+        print("key:" + k)
 
 ######################################
 
-os.chdir('/home/aarch305305/tmp/django/vmai/app/sovits')
+os.chdir('/home/yuanhan132132/vmai2/app/sovits')
 logging.getLogger('numba').setLevel(logging.WARNING)
 initModels()
 
@@ -105,7 +126,7 @@ def convert(request):
     if request.method == "POST":
         audio= request.FILES["music_file"].temporary_file_path()
         duration = librosa.get_duration(filename=audio)
-        if duration > 30:
+        if duration > 40:
             return HttpResponseBadRequest(
                 content_type='application/json',
                 content={"error": "Time over 30s"}
