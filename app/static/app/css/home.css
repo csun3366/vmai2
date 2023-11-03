@@ -22,12 +22,15 @@ body {
 }
 
 #home h1 {
+  font-family:Arial Black;
   font-size: 48px;
   font-weight: bold;
   margin: 10px 0;
 }
 
 #home h2 {
+  font-family:Arial Black;
+  color: #666666;
   font-size: 24px;
   margin: 10px 0;                                                                                      
 }

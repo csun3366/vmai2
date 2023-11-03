@@ -22,7 +22,7 @@
 <body>
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top navbar">
-    <div class="container">
+    <div style="font-family:Arial Black;" class="container">
       <a class="navbar-brand" href="#">Voice Mirror</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -30,41 +30,37 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <a class="nav-link" href="/">首頁</a>
+            <a class="nav-link" href="/">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="characters">音色轉換器</a>                                           
+            <a class="nav-link" href="characters">Voice Cloning</a>
           </li>
         </ul>
-	<!-- <button class="btn btn-primary" type="button">登入</button> -->
+        <! -- <button class="btn btn-primary" type="button">登入</button> -- >
       </div>
     </div>
   </nav>
   <!-- Banner Section -->
-  <div class="banner">
-    <h1 class="text-center text-white">Voice Mirror音色轉換器</h1>
-  </div>
-  <div class="container">
-    {% for char in characters %}
-      <div class="row">
-        <div class="col-12 col-md-2 text-left">
-          <h3><b><font face="微軟正黑體">{{char.name}}</font></b></h3>
-          </br>
+  <div class="container mt-4">
+    <div class="row">
+      {% for char in characters %}
+        <div class="col-12 col-md-4 text-left mb-5">
+          <div class="card text-center mt-4 mx-auto" style="width: 18rem;">
+            <h3><b><font style="font-family:Arial Black;">{{char.name}}</font></b></h3>
+	    </br>
+            <a href="{% url 'characterId' char.id %}">
+              <img style="border-radius: 70%;" width="200px" height="250px" src="{% static char.img_path %}" class="card-img-top" alt="...">
+	    </a>
+            <audio controls style="width: 100%;">
+              <source src="{% static char.audio_path %}" type="audio/wav">
+              Your browser does not support the audio element.
+            </audio>
+	    <a href="{% url 'characterId' char.id %}" class="btn btn-success">Click Me to Upload</a>
+          </div>
         </div>
-        <div class="col-4 col-md-2 text-center">
-          <img style="border-radius: 70%;" width="100%" height="100%" src="{% static char.img_path %}">      
-        </div>
-        <div class="col-8 col-md-6 text-center">
-          <audio controls style="width: 100%;">
-            <source src="{% static char.audio_path %}" type="audio/wav">
-            Your browser does not support the audio element.
-          </audio> 
-        </div>
-        <div class="col-12 col-md-2 text-end">
-          <a href="{% url 'characterId' char.id %}" class="btn btn-success">點我上傳</a>
-        </div>
-      </div>
-    {% endfor %}
+      {% endfor %}
+      </br>
+    </div>
   </div>
   <footer class="container-fluid fixed-bottom bg-dark text-center text-white p-2 mt-5">
     Copyright © 2023 VoiceMirror 

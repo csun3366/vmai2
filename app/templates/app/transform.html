@@ -23,7 +23,7 @@
 <body>
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top navbar">
-    <div class="container">
+    <div style="font-family:Arial Black;" class="container">
       <a class="navbar-brand" href="#">Voice Mirror</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -31,13 +31,13 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <a class="nav-link" href="/">首頁</a>
+            <a class="nav-link" href="/">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/characters">音色轉換器</a>                                           
+            <a class="nav-link" href="/characters">Voice Cloning</a>
           </li>
         </ul>
-	<!-- <button class="btn btn-primary" type="button">登入</button> -->
+        <! -- <button class="btn btn-primary" type="button">登入</button> -- >
       </div>
     </div>
   </nav>
@@ -45,7 +45,7 @@
   <div class="container" style="padding:70px 10px 40px 10px; margin: 0 auto 0 auto;">
     <div class="row">
       <div class="col-12 col-md-12 text-center">
-        <h3><b><font face="微軟正黑體">來轉換{{character.name}}的聲音吧</font></b></h3>
+        <h3><b><font style="font-family:Arial Black;">Let's clone {{character.name}}'s voice!</font></b></h3>
       </div>
       <div class="col-12 col-lg-4 text-center" style="padding:30px 0px 0px 0px;">
         <img style="border-radius: 70%;" width="300px" height="300px" src="{% static character.img_path %}">
@@ -58,10 +58,8 @@
         <div class="upload-area">
           <label for="music-file" class="upload-label">
             <i class="upload-icon fas fa-cloud-upload-alt"></i>
-            <div class="upload-text" id="file-name">
-		    點擊上傳一段聲音檔
-		    </br>
-		    盡量是乾淨人聲, 長度要小於40秒喔
+            <div style="font-family:Arial Black;" class="upload-text" id="file-name">
+		    Please upload a clean vocal recording that is under 30 seconds in length.
 	    </div>
           </label>
           <input type="file" id="music-file" accept=".mp3,.wav,.ogg" style="display: none;">
@@ -71,25 +69,25 @@
           <div class="progress-text" id="progress-text">0%</div>
         </div>
         <div class="pitch-slider">
-          <div class="current-pitch">調整音高: 0</div>
-          <div class="slider-container">
+          <div style="font-family:Arial Black;" class="current-pitch">Transpose: 0</div>
+          <div style="font-family:Arial Black;" class="slider-container">
             <span class="slider-label min-label">-12</span>
             <input type="range" id="transpose" name="pitch" min="-12" max="12" value="0" step="1">
             <span class="slider-label max-label">12</span>
           </div>
         </div>
         <div class="convert-button">
-          <button id="convert-button" disabled>開始轉換</button>
+          <button id="convert-button" disabled>Clone</button>
         </div>
         <div id="xxx"></div>
         <a id="tryagain" style="display: none;" href="/transform/{{ character.id }}">
         <div class="convert-button">
           <button>
-            再試一次
+           Try Again 
           </button>
         </div>
         </a>
-        <a style="display: none;" id="tryagain" href="/transform/{{ character.id }}" class="btn btn-success">再試一次</a>
+        <a style="display: none;" id="tryagain" href="/transform/{{ character.id }}" class="btn btn-success">Try Again</a>
       </div> 
     </div>
   </div>
@@ -172,7 +170,7 @@
                     //$('.upload-area').show();
                     // 顯示進度條和進度文字
                     //$('#progress-container').hide();
-                    $('#progress-text').text('好像有哪裡出錯了QQ');
+                    $('#progress-text').text('Something weng wrong!');
                     //$('#transpose').show();
                     //$('#file-name').text('拖放檔案至此或點擊上傳');
                     $('#tryagain').show();
@@ -185,7 +183,7 @@
 
         pitchSlider.addEventListener('input', (event) => {     
             const pitchValue = event.target.value;
-            currentPitch.textContent = `調整音高: ${pitchValue}`;
+            currentPitch.textContent = `Transpose: ${pitchValue}`;
         });
 
         const audioFileInput = document.getElementById('music-file');
@@ -197,7 +195,7 @@
           if (file) {
 
             if (!file.type.startsWith('audio/')) {
-                window.alert("要上傳聲音檔喔")
+                window.alert("Please Upload an audio file!")
                 $('.upload-area').hide();
                 $('.pitch-slider').hide();
                 $('#convert-button').hide();
@@ -212,7 +210,7 @@
               console.log(duration)
               if (duration > 40) {
                   $('#convert-button').prop('disabled', true);
-                  window.alert("要上傳小於40秒的聲音檔喔")
+                  window.alert("Upload a sample of voice under 30 seconds in length!")
                   $('.upload-area').hide();
                   $('.pitch-slider').hide();
                   $('#convert-button').hide();
@@ -227,7 +225,7 @@
             $('.progress-bar').css('width', progress + '%');
             var pr = Math.round(progress);
             if (pr == 100) {
-                $('#progress-text').text('轉換中...');
+                $('#progress-text').text('Cloning...');
                 var startTime = Date.now(); // 记录开始转换的时间
 
                 function updateConversionTime() {
@@ -237,11 +235,11 @@
                     var minutes = Math.floor(elapsedTime / 1000 / 60);
                     var timeString = minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
                     console.log(timeString)
-                    $('#progress-text').text('轉換中: ' + timeString);
+                    $('#progress-text').text('Cloning: ' + timeString);
                 }
         
             } else {
-                $('#progress-text').text('上傳檔案中: ' + Math.round(progress) + '%')
+                $('#progress-text').text('Uploading: ' + Math.round(progress) + '%')
             }
         }
 

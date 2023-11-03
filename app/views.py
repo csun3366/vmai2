@@ -56,8 +56,30 @@ def initModels():
 
     device = "cuda" if torch.cuda.is_available() else "cpu" 
 
-    # Add models 
-    models["32"] = Svc(net_g_path='logs/44k/G_trump_68000.pth', config_path='configs/config_trump.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    # Add models  
+    models["56"] = Svc(net_g_path='logs/44k/G_eminem_86400.pth', config_path='configs/config_eminem.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["55"] = Svc(net_g_path='logs/44k/G_homersimpson_22000.pth', config_path='configs/config_homersimpson.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["54"] = Svc(net_g_path='logs/44k/G_uzi_237600.pth', config_path='configs/config_uzi.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["53"] = Svc(net_g_path='logs/44k/G_maria_122400.pth', config_path='configs/config_maria.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["52"] = Svc(net_g_path='logs/44k/G_yang_21000.pth', config_path='configs/config_yang.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    # models["51"] = Svc(net_g_path='logs/44k/G_cho_21000.pth', config_path='configs/config_cho.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["49"] = Svc(net_g_path='logs/44k/G_lisasimpson_22000.pth', config_path='configs/config_lisasimpson.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["50"] = Svc(net_g_path='logs/44k/G_dung_22000.pth', config_path='configs/config_dung.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    # models["46"] = Svc(net_g_path='logs/44k/G_savage_100000.pth', config_path='configs/config_savage.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["45"] = Svc(net_g_path='logs/44k/G_trump_18500.pth', config_path='configs/config_trump.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["44"] = Svc(net_g_path='logs/44k/G_aiko_61600.pth', config_path='configs/config_aiko.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    # models["43"] = Svc(net_g_path='logs/44k/G_eminem_203200.pth', config_path='configs/config_eminem.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    # models["42"] = Svc(net_g_path='logs/44k/G_kendrik_1002000.pth', config_path='configs/config_kendrik.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["41"] = Svc(net_g_path='logs/44k/G_paulo_100800.pth', config_path='configs/config_paulo.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    # models["40"] = Svc(net_g_path='logs/44k/G_jennie_65600.pth', config_path='configs/config_jennie.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["39"] = Svc(net_g_path='logs/44k/G_sidhu_60000.pth', config_path='configs/config_sidhu.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    # models["38"] = Svc(net_g_path='logs/44k/G_bunny_180800.pth', config_path='configs/config_bunny.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["37"] = Svc(net_g_path='logs/44k/G_doja_163200.pth', config_path='configs/config_doja.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["36"] = Svc(net_g_path='logs/44k/G_britney_100000.pth', config_path='configs/config_britney.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["35"] = Svc(net_g_path='logs/44k/G_bart_22000.pth', config_path='configs/config_bart.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["34"] = Svc(net_g_path='logs/44k/G_taylor_106400.pth', config_path='configs/config_taylor.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    models["33"] = Svc(net_g_path='logs/44k/G_obama_50000.pth', config_path='configs/config_obama.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
+    # models["32"] = Svc(net_g_path='logs/44k/G_trump_68000.pth', config_path='configs/config_trump.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
     models["31"] = Svc(net_g_path='logs/44k/G_drake_106000.pth', config_path='configs/config_drake.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
     models["30"] = Svc(net_g_path='logs/44k/G_chris_105600.pth', config_path='configs/config_chris.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
     models["29"] = Svc(net_g_path='logs/44k/G_chief_100000.pth', config_path='configs/config_chief.json', device=device, cluster_model_path='logs/44k/kmeans_10000.pt')
