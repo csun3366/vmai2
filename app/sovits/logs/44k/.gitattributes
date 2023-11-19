@@ -1,1 +1,2 @@
 G_small_new_230930_18000.pth filter=lfs diff=lfs merge=lfs -text
+G_sun_27200.pth filter=lfs diff=lfs merge=lfs -text
