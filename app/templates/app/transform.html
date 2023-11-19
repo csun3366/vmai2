@@ -208,7 +208,7 @@
             audio.addEventListener('loadedmetadata', () => {
               const duration = audio.duration;
               console.log(duration)
-              if (duration > 40) {
+              if (duration > 30) {
                   $('#convert-button').prop('disabled', true);
                   window.alert("Upload a sample of voice under 30 seconds in length!")
                   $('.upload-area').hide();

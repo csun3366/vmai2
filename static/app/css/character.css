@@ -1,0 +1,120 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  padding-top: 20px;
+  background-image: url('../images/banner/5.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+#home {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+#home h1 {
+  font-size: 48px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+#home h2 {
+  font-size: 48px;
+  margin: 10px 0;                                                                                      
+}
+
+#character {
+  margin-top: 70px;
+}
+
+.navbar {
+}
+
+/* Banner styles */
+.banner {
+  height: 50vh; /* Half of the viewport height */
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.banner h1 {
+  font-size: 48px;
+}
+
+/* Responsive banner styles */
+@media (max-width: 768px) {
+  /* On smaller screens, adjust the height and font size for the banner */
+  .banner {
+    height: 40vh; /* 40% of the viewport height */
+  }
+
+  .banner h1 {
+    font-size: 36px;
+  }
+}
+
+/* Leaderboard styles */
+.leaderboard-section {
+  padding: 20px 0;
+}
+
+.leaderboard-section h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Header Row styles */
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  background-color: #f0f0f0; /* Light gray background color for header row */
+  font-weight: bold;
+}
+
+.header-item {
+  flex: 1;
+  text-align: center;
+}
+
+/* Leaderboard Rows styles */
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc; /* Add light gray border as the separator */
+}
+
+.row:last-child {
+  border-bottom: none; /* Remove the border for the last row */
+}
+
+.row img {
+  /width: 100px; /* Adjust the image width as needed */
+  margin-right: 20px;
+}
+
+.row h3 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.row p {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+}
+

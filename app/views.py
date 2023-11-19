@@ -107,7 +107,7 @@ def initModels():
 
 ######################################
 
-os.chdir('/home/yuanhan132132/vmai2/app/sovits')
+os.chdir('/home/yuanhan132132/vmai/app/sovits')
 logging.getLogger('numba').setLevel(logging.WARNING)
 initModels()
 
