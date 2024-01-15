@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app',
     'sslserver',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -56,7 +57,7 @@ ROOT_URLCONF = 'vmai.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["/home/yuanhan132132/vmai/app/templates"],
+        'DIRS': ["/home/csun3366/vmai/app/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -126,4 +127,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 FILE_UPLOAD_HANDLERS = ["django.core.files.uploadhandler.TemporaryFileUploadHandler"]
-
+#SECURE_SSL_REDIRECT = True
+#SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+#SECURE_SSL_HOST = 'voicemirror.ix.tc'  # 你的域名
+#SSL_CERTIFICATE = '/home/csun3366/vmai/fullchain.pem'  # SSL 证书路径
+#SSL_KEY = '/home/csun3366/vmai/privkey.pem'  # SSL 私钥路径
